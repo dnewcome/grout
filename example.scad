@@ -1,4 +1,4 @@
-include <grout.scad>
+use <grout.scad>
 
 // adjust items according to scale
 scale_len = 25 * 25.4;
