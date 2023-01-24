@@ -1,14 +1,5 @@
 include <parts.scad>
 
-// adjust items according to scale
-scale_len = 25 * 25.4;
-
-// distance of 21st fret from center of neck pocket
-// TODO: not used yet but we need to implement a way
-// to index the neck position to the template since necks
-// vary in their heel geometry
-fret_21_offset = 0 * 25.4;
-
 module neck_pocket() {
     // TODO: locate screw holes
     rnd_trap(50, 55, 60, 5);
@@ -51,10 +42,4 @@ module jazz_template() {
         template_outline();
         jazz_layout();
     }
-}
-
-// full routing template including body shape
-difference() {   
-    scale(1) import("strat-body-outline.svg");
-    jazz_layout();
 }

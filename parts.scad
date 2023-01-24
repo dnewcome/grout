@@ -1,12 +1,3 @@
-// adjust items according to scale
-scale_len = 25 * 25.4;
-
-// allow for 21 vs 22/24 fret neck
-nut_to_last_fret = 15 * 25.4;
-
-// neck bolt pattern offset
-neck_offset = 0 * 25.4;
-
 module rnd_rect_ctr(w, h, r) {
     rnd_trap(w, w, h, r);
 }
