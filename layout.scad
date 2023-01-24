@@ -1,24 +1,13 @@
+include <parts.scad>
+
 // adjust items according to scale
 scale_len = 25 * 25.4;
 
-// allow for 21 vs 22/24 fret neck
-nut_to_last_fret = 15 * 25.4;
-
-// neck bolt pattern offset
-neck_offset = 0 * 25.4;
-
-module rnd_rect_ctr(w, h, r) {
-    rnd_trap(w, w, h, r);
-}
- 
-module rnd_trap(w1, w2, h, r) {
-    hull() {
-        translate([-w1/2+r/2,h/2-r/2]) circle(r = r);
-        translate([w1/2-r/2, h/2-r/2]) circle(r = r);
-        translate([-w2/2+r/2, -h/2+r/2]) circle(r = r);
-        translate([w2/2-r/2, -h/2+r/2]) circle(r = r);
-    }
-}
+// distance of 21st fret from center of neck pocket
+// TODO: not used yet but we need to implement a way
+// to index the neck position to the template since necks
+// vary in their heel geometry
+fret_21_offset = 0 * 25.4;
 
 module neck_pocket() {
     // TODO: locate screw holes
@@ -26,54 +15,21 @@ module neck_pocket() {
 }
 
 module neck_pickup() {
-    pickup();
+    pickup_humbucker();
 }
 
 module bridge_pickup() {
-    pickup();
-}
-  
-module pickup() {
-    // TODO: locate screw holes
-    rnd_rect_ctr(120, 20, 10);
-    rnd_rect_ctr(100, 50, 10);
-}
-
-module tailpiece() {
-    r = 2;
-    w1 = 20;
-    w2 = 20;
-    h = 20;
-        translate([-w1/2+r/2,h/2-r/2]) circle(r = r);
-        translate([w1/2-r/2, h/2-r/2]) circle(r = r);
-        translate([-w2/2+r/2, -h/2+r/2]) circle(r = r);
-        translate([w2/2-r/2, -h/2+r/2]) circle(r = r);
-
-}
-
-module bridge(ctr, d) {
-    translate([-ctr/2, 0]) circle(d);
-    translate([ctr/2, 0]) circle(d);
-    }
-
-module jazzmaster_bridge() {
-    w = 2.75 * 25.4;
-    w2 = 0.625 * 25.4;
-    h = 2.5 * 25.4;
-    h2 = 3.125 * 25.4;
-    rtr_bit_d = 3;
-    rnd_rect_ctr(w, h, rtr_bit_d);
-    translate([0, 10]) rnd_rect_ctr(w2, h, rtr_bit_d);
-    // todo: locate screw holes
-    
+    pickup_humbucker();
 }
     
-    
-    
+// when creating a standalone template without a body shape
+// this rectangular outline is used
 module template_outline() {
     translate([-100, -400]) square([200, 400]);
 }
-module layout() {
+
+// sample layout for a tune-o-matic style bridge
+module tuneomatic_layout() {
     translate([0, -25]) neck_pocket();
     translate([0, -140]) neck_pickup();
     translate([0, -240]) bridge_pickup();
@@ -81,6 +37,7 @@ module layout() {
     translate([0, -350]) tailpiece();
 }
 
+// sample layout for a jazzmaster style bridge
 module jazz_layout() {
     translate([0, -25]) neck_pocket();
     translate([0, -140]) neck_pickup();
@@ -88,6 +45,7 @@ module jazz_layout() {
     translate([0, -320]) jazzmaster_bridge();
 }
 
+// standalone routing template using jazzmaster layout
 module jazz_template() {
     difference() {
         template_outline();
@@ -95,22 +53,8 @@ module jazz_template() {
     }
 }
 
-module template() {
-    difference() {
-        template_outline();
-        layout();
-    }
-}
-
-
-
-
-//template();
-// jazz_template();
-
-
-difference() {
-    
-    scale(1) import("scale-test.svg");
+// full routing template including body shape
+difference() {   
+    scale(1) import("strat-body-outline.svg");
     jazz_layout();
 }
