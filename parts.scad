@@ -2,9 +2,9 @@ use <primitives.scad>
 
 // stratocaster style neck
 module neck_strat() {
-    w1 = 50;
-    w2 = 55;
-    h = 60;
+    w1 = 55.5;
+    w2 = 57;
+    h = 58;
     d = 5;
     difference() {
         rnd_trap(w1, w2, h, d);
@@ -17,14 +17,14 @@ module neck_strat() {
   
 // pickup-ring style humbucker
 module pickup_humbucker() {
-    w = 100;
-    h = 50;
-    wing_w = 120;
+    w = 70;
+    h = 38;
+    wing_w = 86;
     wing_h = 20;
     router_d = 6;
     screw_d = 2;
-    screw_w = 110;
-    screw_h = 60;
+    screw_w = 83;
+    screw_h = 38;
     
     // pickup cavity
     rnd_rect_ctr(wing_w, wing_h, router_d);
@@ -49,9 +49,9 @@ module tailpiece_stop() {
     translate([w2/2-r/2, -h/2+r/2]) circle(r = r);
 }
 
-module bridge_tuneomatic(ctr, d) {
-    translate([-ctr/2, 0]) circle(d);
-    translate([ctr/2, 0]) circle(d);
+module bridge_tuneomatic_jazzmaster(ctr, d) {
+    translate([-ctr/2, 0]) circle(d=d);
+    translate([ctr/2, 0]) circle(d=d);
 }
 
 module bridge_jazzmaster() {
@@ -67,6 +67,8 @@ module bridge_jazzmaster() {
 }
     
     
-    
-neck_strat();
+difference() {
+    translate([0, 0]) square([100, 25], center = true);
+    bridge_tuneomatic_jazzmaster(73, 10);
+}
 

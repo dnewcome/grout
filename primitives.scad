@@ -1,10 +1,10 @@
 // trapezoidal rounded pocket shape
 module rnd_trap(w1, w2, h, r) {
     hull() {
-        translate([-w1/2+r/2,h/2-r/2]) circle(r = r);
-        translate([w1/2-r/2, h/2-r/2]) circle(r = r);
-        translate([-w2/2+r/2, -h/2+r/2]) circle(r = r);
-        translate([w2/2-r/2, -h/2+r/2]) circle(r = r);
+        translate([-w1/2+r,h/2-r]) circle(r = r);
+        translate([w1/2-r, h/2-r]) circle(r = r);
+        translate([-w2/2+r, -h/2+r]) circle(r = r);
+        translate([w2/2-r, -h/2+r]) circle(r = r);
     }
 }
 
