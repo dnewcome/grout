@@ -4,6 +4,8 @@ locating_hole_dia = str(locating_hole_d) == "undef" ? 3 : locating_hole_d;
 
 // stratocaster style neck
 // origin is at 20th fret
+// 20th fret is chosen kind of arbitrarily mostly because it's rare for a neck to have
+// fewer than 20 frets and makes a convenient origin point.
 module neck_strat() {
     w1 = 55;
     w2 = 57.25;
@@ -16,29 +18,30 @@ module neck_strat() {
     }
 }
 
-module neck_strat_plate(offset = 0, outline = false, mark = true) {
+// neck mounting plate has a hole pattern and an outline. Outline mode
+// makes sense when overlaying on the body to see if the plate will overhang
+// Mark mode makes the locating hole sized for a transfer punch
+module neck_strat_plate(outline = false, mark = true) {
     w = 51;
     hw = 38.25;
     h = 64;
     hh = 51;
     d = mark ? locating_hole_dia : 6; 
     
-    translate([0, offset]) {
-        if (outline == true) {
-            difference() {
-                square([w, h], center = true);
-                translate([-hw/2, hh/2]) circle(d=d);
-                translate([hw/2, hh/2]) circle(d=d);
-                translate([hw/2, -hh/2]) circle(d=d);
-                translate([-hw/2, -hh/2]) circle(d=d);
-            }
-        }
-        else {
+    if (outline == true) {
+        difference() {
+            square([w, h], center = true);
             translate([-hw/2, hh/2]) circle(d=d);
             translate([hw/2, hh/2]) circle(d=d);
             translate([hw/2, -hh/2]) circle(d=d);
             translate([-hw/2, -hh/2]) circle(d=d);
         }
+    }
+    else {
+        translate([-hw/2, hh/2]) circle(d=d);
+        translate([hw/2, hh/2]) circle(d=d);
+        translate([hw/2, -hh/2]) circle(d=d);
+        translate([-hw/2, -hh/2]) circle(d=d);
     }
 }
   

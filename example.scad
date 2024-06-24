@@ -16,13 +16,13 @@ router_dia = 3;
 if (slug == false) {
     difference() {   
         import("strat-body-outline.svg");
-        jazz_layout();
+        jazz_layout(slug);
     }
 }
 
 else {
     intersection() {
-        jazz_layout();
+        jazz_layout(slug);
         import("strat-body-outline.svg");
     }
 }

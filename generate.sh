@@ -1,8 +1,10 @@
 ## Command to generate templates with openscad
 
+mkdir ./out
+
 # neck heel pocket removable template insert slug
-openscad -D slug=true -o test-slug.dxf grout-test.scad
+openscad -D slug=true -o out/test-slug.dxf example.scad
 
 # main template
-openscad -D slug=false -o test-template.dxf grout-test.scad
+openscad -D slug=false -o out/test-template.dxf example.scad
 
