@@ -1,4 +1,4 @@
-use <grout.scad>
+use <grout/grout.scad>
 
 // adjust items according to scale
 scale_len = 25 * 25.4;
@@ -12,8 +12,17 @@ fret_21_offset = 0 * 25.4;
 // inside curves have a min dia of the tool used
 router_dia = 3;
 
-// full routing template including body shape
-difference() {   
-    import("strat-body-outline.svg");
-    jazz_layout();
+
+if (slug == false) {
+    difference() {   
+        import("strat-body-outline.svg");
+        jazz_layout();
+    }
+}
+
+else {
+    intersection() {
+        jazz_layout();
+        import("strat-body-outline.svg");
+    }
 }
