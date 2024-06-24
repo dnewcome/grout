@@ -1,28 +1,55 @@
 use <primitives.scad>
 
+locating_hole_dia = str(locating_hole_d) == "undef" ? 3 : locating_hole_d;
+
 // stratocaster style neck
+// origin is at 20th fret
 module neck_strat() {
-    w1 = 55.5;
-    w2 = 57;
-    h = 58;
-    d = 5;
-    difference() {
+    w1 = 55;
+    w2 = 57.25;
+    h = 3.5 * 25.4;
+    d = 5; // pocket corner diameter 
+    // offset of 20th fret from end of pocket
+    fret_offset = 27.5;
+    translate([0, h/2-fret_offset]) { 
         rnd_trap(w1, w2, h, d);
-        translate([-w1/2, h/2]) circle(d=2);
-        translate([w1/2, h/2]) circle(d=2);
-        translate([w1/2, -h/2]) circle(d=2);
-        translate([-w1/2, -h/2]) circle(d=2);
+    }
+}
+
+module neck_strat_plate(offset = 0, outline = false, mark = true) {
+    w = 51;
+    hw = 38.25;
+    h = 64;
+    hh = 51;
+    d = mark ? locating_hole_dia : 6; 
+    
+    translate([0, offset]) {
+        if (outline == true) {
+            difference() {
+                square([w, h], center = true);
+                translate([-hw/2, hh/2]) circle(d=d);
+                translate([hw/2, hh/2]) circle(d=d);
+                translate([hw/2, -hh/2]) circle(d=d);
+                translate([-hw/2, -hh/2]) circle(d=d);
+            }
+        }
+        else {
+            translate([-hw/2, hh/2]) circle(d=d);
+            translate([hw/2, hh/2]) circle(d=d);
+            translate([hw/2, -hh/2]) circle(d=d);
+            translate([-hw/2, -hh/2]) circle(d=d);
+        }
     }
 }
   
 // pickup-ring style humbucker
-module pickup_humbucker() {
+module pickup_humbucker(mark = true) {
     w = 70;
     h = 38;
     wing_w = 86;
     wing_h = 20;
-    router_d = 6;
-    screw_d = 2;
+    router_d = 6; // routing tool size
+    screw_d = mark ? locating_hole_dia : 2;
     screw_w = 83;
     screw_h = 38;
     
@@ -37,18 +64,7 @@ module pickup_humbucker() {
     translate([-screw_w/2, -screw_h/2]) circle(d=screw_d);
 }
 
-// plain stop tailpiece
-module tailpiece_stop() {
-    r = 2;
-    w1 = 20;
-    w2 = 20;
-    h = 20;
-    translate([-w1/2+r/2,h/2-r/2]) circle(r = r);
-    translate([w1/2-r/2, h/2-r/2]) circle(r = r);
-    translate([-w2/2+r/2, -h/2+r/2]) circle(r = r);
-    translate([w2/2-r/2, -h/2+r/2]) circle(r = r);
-}
-
+// TODO: measure correct width
 module bridge_tuneomatic_jazzmaster(ctr, d) {
     translate([-ctr/2, 0]) circle(d=d);
     translate([ctr/2, 0]) circle(d=d);
@@ -66,9 +82,38 @@ module bridge_jazzmaster() {
     
 }
     
+// basic all-in one saddle tailpiece
+module fixed_tailpiece(outline = false, mark = true) {
+    h = 43;
+    w = 78;
     
-difference() {
-    translate([0, 0]) square([100, 25], center = true);
-    bridge_tuneomatic_jazzmaster(73, 10);
-}
+    // true size is 4mm, use 1mm for marking
+    d = mark ? locating_hole_dia : 4;
+    hole_w = 67;
+    hole_h = 28.5;
+    saddle_offset = 8.5;
+    
+    
+    translate([-w/2, -h/2-saddle_offset]) {
+        if (outline == true) {
+            difference() {
+                square([w, h]);
+            
+                translate([(w - hole_w) / 2, (h - hole_h) / 2]) circle(d = d);
+                translate([(w - hole_w) / 2 + hole_w, (h - hole_h) / 2]) circle(d = d);
+                translate([(w - hole_w) / 2 + hole_w, (h - hole_h) / 2 + hole_h]) circle(d = d);
+                translate([(w - hole_w) / 2, (h - hole_h) / 2 + hole_h]) circle(d = d);
 
+                translate([(w - hole_w) / 2 + hole_w / 2, (h - hole_h) / 2]) circle(d = d);
+            }
+        }
+        else {
+            translate([(w - hole_w) / 2, (h - hole_h) / 2]) circle(d = d);
+            translate([(w - hole_w) / 2 + hole_w, (h - hole_h) / 2]) circle(d = d);
+            translate([(w - hole_w) / 2 + hole_w, (h - hole_h) / 2 + hole_h]) circle(d = d);
+            translate([(w - hole_w) / 2, (h - hole_h) / 2 + hole_h]) circle(d = d);
+
+            translate([(w - hole_w) / 2 + hole_w / 2, (h - hole_h) / 2]) circle(d = d);
+        }
+    }
+}
